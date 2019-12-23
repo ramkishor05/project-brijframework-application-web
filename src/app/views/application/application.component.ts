@@ -1,57 +1,67 @@
-import { Component ,ElementRef, Input, OnInit, OnDestroy } from '@angular/core';
-import { ModalService } from '../../_services';
+
+import { Component , OnInit, OnDestroy } from '@angular/core';
+import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { DefaultConfig , Columns, Config, } from 'ngx-easy-table';
+
 
 @Component({
   templateUrl: 'application.component.html'
 })
 export class ApplicationComponent implements OnInit, OnDestroy {
+    public configuration: Config;
+    public columns: Columns[];
+    public applications: any[];
+    form: FormGroup;
 
-  @Input() id: string;
-  private element: any;
+    constructor( private modService: NgbModal, private config: NgbModalConfig, private fb: FormBuilder ) {
+    }
 
-  constructor(private modalService: ModalService, private el: ElementRef) {
-      this.element = el.nativeElement;
-  }
-
-  ngOnInit(): void {
-      let modal = this;
-
-      // ensure id attribute exists
-      if (!this.id) {
-          console.error('modal must have an id');
-          return;
-      }
-
-      // move element to bottom of page (just before </body>) so it can be displayed above everything else
-      document.body.appendChild(this.element);
-
-      // close modal on background click
-      this.element.addEventListener('click', function (e: any) {
-          if (e.target.className === 'jw-modal') {
-              modal.close();
+   ngOnInit(): void {
+     this.applications = [
+        {
+            appId: '+1 (934) 551-2224',
+            appName: 20,
+            appUrl: { street: 'North street', number: 12 },
+            appLogo: 'ZILLANET',
+            status: false
+          }, {
+            appId: '+1 (948) 460-3627',
+            appName: 31,
+            appUrl: { street: 'South street', number: 12 },
+            appLogo: 'KNOWLYSIS',
+            status: true
           }
+     ];
+     this.configuration = { ...DefaultConfig };
+     this.configuration.orderEnabled = false;
+     this.form = this.fb.group({
+        appId: ['', Validators.compose([Validators.required, Validators.maxLength(20), Validators.minLength(2)])],
+        appName: ['', Validators.compose([Validators.required, Validators.maxLength(20), Validators.minLength(2)])],
+        appUrl: ['', Validators.compose([Validators.required, Validators.maxLength(20), Validators.minLength(2)])],
+        appLogo: ['', Validators.compose([Validators.required, Validators.maxLength(20), Validators.minLength(2)])],
+        status: ['', Validators.compose([Validators.required, Validators.maxLength(20), Validators.minLength(2)])]
       });
-
-      // add self (this modal instance) to the modal service so it's accessible from controllers
-      this.modalService.add(this);
-  }
+      this.columns = [
+        { key: 'appId', title: 'App Logo', orderEnabled: false },
+        { key: 'appId', title: 'App Id', orderEnabled: false },
+        { key: 'appName', title: 'App Name', orderEnabled: false },
+        { key: 'appUrl', title: 'App URL', orderEnabled: false },
+        { key: 'status', title: 'App status', orderEnabled: false } 
+      ];
+   }
 
   // remove self from modal service when directive is destroyed
   ngOnDestroy(): void {
-      this.modalService.remove(this.id);
-      this.element.remove();
   }
 
-  // open modal
-  open(): void {
-      this.element.style.display = 'block';
-      document.body.classList.add('jw-modal-open');
+  addApplication( content ) {
+    this.modService.open(content, { size: 'lg', backdrop: 'static' });
   }
 
-  // close modal
-  close(): void {
-      this.element.style.display = 'none';
-      document.body.classList.remove('jw-modal-open');
+  saveApplication(values) {
+      console.log("values=",values);
+    this.modService.dismissAll();
   }
-     
+
 }
