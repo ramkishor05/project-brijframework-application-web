@@ -6,16 +6,17 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TableModule } from 'ngx-easy-table';
 import { CommonModule } from '@angular/common';
+import { ApplicationRoleComponent } from './application.role.component';
 @NgModule({
   imports: [
-    ApplicationRoutingModule,
     FormsModule,
     NgbModule,
     TableModule,
     ReactiveFormsModule,
-    CommonModule
+    CommonModule,
+    ApplicationRoutingModule
   ],
-  declarations: [ ApplicationComponent ]
+  declarations: [ ApplicationComponent , ApplicationRoleComponent]
 })
 export class ApplicationModule {
 

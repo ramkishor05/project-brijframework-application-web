@@ -1,11 +1,13 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
+import { UrlbuilderService } from './service/urlbuilder.service';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -41,6 +43,8 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { ChartsModule } from 'ng2-charts';
 import { ModalService } from './_services';
+import { APP_CONFIG, AppConfig } from './config/app-config';
+import { TokenInterceptor } from './service/token.interceptor';
 @NgModule({
   imports: [
     BrowserModule,
@@ -54,7 +58,8 @@ import { ModalService } from './_services';
     PerfectScrollbarModule,
     BsDropdownModule.forRoot(),
     TabsModule.forRoot(),
-    ChartsModule
+    ChartsModule,
+    HttpClientModule
   ],
   declarations: [
     AppComponent,
@@ -64,10 +69,14 @@ import { ModalService } from './_services';
     LoginComponent,
     RegisterComponent
   ],
-  providers: [ModalService,{
+  providers: [ModalService, {
     provide: LocationStrategy,
-    useClass: HashLocationStrategy
-  }],
-  bootstrap: [ AppComponent ]
+    useClass: HashLocationStrategy},
+    UrlbuilderService,
+       { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
+       { provide: APP_CONFIG, useValue: AppConfig }
+    ],
+
+    bootstrap: [AppComponent]
 })
 export class AppModule { }
