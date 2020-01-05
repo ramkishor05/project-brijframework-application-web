@@ -42,7 +42,6 @@ import { AppRoutingModule } from './app.routing';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { ChartsModule } from 'ng2-charts';
-import { ModalService } from './_services';
 import { APP_CONFIG, AppConfig } from './config/app-config';
 import { TokenInterceptor } from './service/token.interceptor';
 @NgModule({
@@ -69,9 +68,7 @@ import { TokenInterceptor } from './service/token.interceptor';
     LoginComponent,
     RegisterComponent
   ],
-  providers: [ModalService, {
-    provide: LocationStrategy,
-    useClass: HashLocationStrategy},
+  providers: [
     UrlbuilderService,
        { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
        { provide: APP_CONFIG, useValue: AppConfig }

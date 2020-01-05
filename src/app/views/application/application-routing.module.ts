@@ -3,11 +3,14 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { ApplicationComponent } from './application.component';
 import { ApplicationRoleComponent } from './application.role.component';
+import { ApplicationFeatureComponent } from './application.feature.component';
+import { ApplicationEditionComponent } from './application.edition.component';
 
 const routes: Routes = [
   { path: '', component: ApplicationComponent},
   { path: 'detail',  component : ApplicationComponent },
-  { path: 'feature',  component : ApplicationRoleComponent },
+  { path: 'edition',  component : ApplicationEditionComponent },
+  { path: 'feature',  component : ApplicationFeatureComponent },
   { path: 'role',  component : ApplicationRoleComponent },
 ];
 

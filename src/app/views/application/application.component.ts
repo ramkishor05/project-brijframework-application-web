@@ -2,7 +2,6 @@
 import { Component , OnInit, OnDestroy } from '@angular/core';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DefaultConfig , Columns, Config, } from 'ngx-easy-table';
 import { ApplicationService } from '../../service/application.service';
 
 
@@ -10,8 +9,6 @@ import { ApplicationService } from '../../service/application.service';
   templateUrl: 'application.component.html'
 })
 export class ApplicationComponent implements OnInit, OnDestroy {
-    public configuration: Config;
-    public columns: Columns[];
     public applications: any[];
     public modelData = {
       id: null,
@@ -27,18 +24,10 @@ export class ApplicationComponent implements OnInit, OnDestroy {
        externalHost: null,
        internalPort: null,
        externalPort: null
-      },
-      appEdition : {
-        id: null,
-        displayOrder: 1,
-        description: null,
-        monthlyRate: 0.0,
-        startPayDay: 15,
-        trail: true,
-        version: 1.0,
       }
     };
     form: FormGroup;
+    columns: { key: string; title: string; orderEnabled: boolean; }[];
 
     constructor(private modService: NgbModal ,
       private config: NgbModalConfig ,
@@ -47,9 +36,7 @@ export class ApplicationComponent implements OnInit, OnDestroy {
     }
 
    ngOnInit(): void {
-     this.applications = [     ];
-     this.configuration = { ...DefaultConfig };
-     this.configuration.orderEnabled = false;
+     this.applications = [];
      this.form = this.fb.group({
         id: [0],
         appId: ['', Validators.compose([Validators.required, Validators.maxLength(20), Validators.minLength(2)])],
@@ -62,14 +49,7 @@ export class ApplicationComponent implements OnInit, OnDestroy {
         'appDetail.internalHost': ['', Validators.compose([Validators.required, Validators.maxLength(20), Validators.minLength(2)])],
         'appDetail.internalPort': ['', Validators.compose([Validators.required, Validators.maxLength(20), Validators.minLength(2)])],
         'appDetail.externalHost': ['', Validators.compose([Validators.required, Validators.maxLength(20), Validators.minLength(2)])],
-        'appDetail.externalPort': ['', Validators.compose([Validators.required, Validators.maxLength(20), Validators.minLength(2)])],
-        'appEdition.id':  ['', Validators.compose([Validators.required, Validators.maxLength(20), Validators.minLength(1)])],
-        'appEdition.displayOrder':  ['', Validators.compose([Validators.required, Validators.maxLength(20), Validators.minLength(2)])],
-        'appEdition.description':  ['', Validators.compose([Validators.required, Validators.maxLength(20), Validators.minLength(2)])],
-        'appEdition.monthlyRate':  ['', Validators.compose([Validators.required, Validators.maxLength(20), Validators.minLength(2)])],
-        'appEdition.startPayDay':  ['', Validators.compose([Validators.required, Validators.maxLength(20), Validators.minLength(2)])],
-        'appEdition.trail':  ['', Validators.compose([Validators.required, Validators.maxLength(20), Validators.minLength(2)])],
-        'appEdition.version':  ['', Validators.compose([Validators.required, Validators.maxLength(20), Validators.minLength(2)])]
+        'appDetail.externalPort': ['', Validators.compose([Validators.required, Validators.maxLength(20), Validators.minLength(2)])]
       });
       this.columns = [
         { key: 'appLogo', title: 'App Logo', orderEnabled: false },
@@ -99,9 +79,6 @@ export class ApplicationComponent implements OnInit, OnDestroy {
   updateApplication(content: any, application: any) {
     if ( application['appDetail'] == null) {
       application['appDetail'] = this.modelData.appDetail;
-    }
-    if ( application['appEdition'] == null) {
-      application['appEdition'] = this.modelData.appEdition;
     }
     console.log('values=', application);
     this.modelData = application;
@@ -152,15 +129,6 @@ export class ApplicationComponent implements OnInit, OnDestroy {
     requstJson['appDetail']['internalPort'] = values['appDetail.internalPort'];
     requstJson['appDetail']['externalHost'] = values['appDetail.externalHost'];
     requstJson['appDetail']['externalPort'] = values['appDetail.externalPort'];
-    requstJson['appEdition'] = {
-      id: values['appEdition.id'],
-      displayOrder: values['appEdition.displayOrder'],
-      description: values['appEdition.description'],
-      monthlyRate: values['appEdition.monthlyRate'],
-      startPayDay: values['appEdition.startPayDay'],
-      trail: values['appEdition.trail'],
-      version: values['appEdition.version']
-    };
     console.log('requstJson=', requstJson);
     return requstJson;
   }

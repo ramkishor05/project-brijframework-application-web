@@ -17,22 +17,27 @@ export const navItems: INavData[] = [
   {
     name: 'Application',
     url: '/application',
-    icon: 'icon-drop',
+    icon: 'icon-heart',
     children: [
       {
         name: 'Application Detail',
         url: '/application/detail',
-        icon: 'icon-bell'
+        icon: 'icon-info'
+      },
+      {
+        name: 'Application Edition',
+        url: '/application/edition',
+        icon: 'icon-target'
       },
       {
         name: 'Application Feature',
         url: '/application/feature',
-        icon: 'icon-bell'
+        icon: 'icon-target'
       },
       {
         name: 'Application Role',
         url: '/application/role',
-        icon: 'icon-bell'
+        icon: 'icon-emotsmile'
       }
     ]
   },

@@ -2,7 +2,6 @@
 import { Component , OnInit, OnDestroy } from '@angular/core';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DefaultConfig , Columns, Config, } from 'ngx-easy-table';
 import { ApplicationService } from '../../service/application.service';
 
 
@@ -10,8 +9,7 @@ import { ApplicationService } from '../../service/application.service';
   templateUrl: 'application.role.component.html'
 })
 export class ApplicationRoleComponent implements OnInit, OnDestroy {
-    public configuration: Config;
-    public columns: Columns[];
+    public columns: any[];
     public applicationRoles: any[];
     public applicationRole = {
       id : null,
@@ -22,6 +20,7 @@ export class ApplicationRoleComponent implements OnInit, OnDestroy {
       status: false
     };
     form: FormGroup;
+    public applications: any[];
 
     constructor(private modService: NgbModal ,
       private config: NgbModalConfig ,
@@ -31,8 +30,6 @@ export class ApplicationRoleComponent implements OnInit, OnDestroy {
 
    ngOnInit(): void {
      this.applicationRoles = [     ];
-     this.configuration = { ...DefaultConfig };
-     this.configuration.orderEnabled = false;
      this.form = this.fb.group({
         id: [0],
         appRoleId: ['', Validators.compose([Validators.required, Validators.maxLength(20), Validators.minLength(2)])],
@@ -50,6 +47,15 @@ export class ApplicationRoleComponent implements OnInit, OnDestroy {
         { key: 'status', title: 'App Role status', orderEnabled: false }
       ];
       this.loadApplicationRoles();
+      this.loadApplications();
+   }
+   
+   loadApplications() {
+    this.applicationService.getApplicationList().subscribe(
+      applicationList => {
+        this.applications = applicationList;
+      },
+    )
    }
 
    loadApplicationRoles() {

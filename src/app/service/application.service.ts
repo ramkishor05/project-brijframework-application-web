@@ -62,5 +62,54 @@ export class ApplicationService {
         return this.http.get<any>(url, { headers: headers });
     }
 
+    addApplicationFeature(application): Observable<any> {
+        const url = this.urlbuilder.buildURL(this.config.applicationfeature);
+        const body = JSON.stringify(application);
+        const headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+        return this.http.post(url, body, { headers: headers });
+    }
+
+    editApplicationFeature(application): Observable<any> {
+        const url = this.urlbuilder.buildURL(this.config.applicationfeature);
+        const body = JSON.stringify(application);
+        const headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+        return this.http.put(url, body, { headers: headers });
+    }
+
+    deleteApplicationFeature(applicationFeatureId): Observable<any> {
+        const url = this.urlbuilder.buildDetailURL(this.config.applicationfeature, applicationFeatureId);
+        return this.http.delete(url);
+    }
+
+    getApplicationFeatureList() {
+        const url = this.urlbuilder.buildURL(this.config.applicationfeature);
+        const headers = new HttpHeaders({ 'Skip-Prefix': 'false' });
+        return this.http.get<any>(url, { headers: headers });
+    }
+
+    addApplicationEdition(application): Observable<any> {
+        const url = this.urlbuilder.buildURL(this.config.applicationedition);
+        const body = JSON.stringify(application);
+        const headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+        return this.http.post(url, body, { headers: headers });
+    }
+
+    editApplicationEdition(application): Observable<any> {
+        const url = this.urlbuilder.buildURL(this.config.applicationedition);
+        const body = JSON.stringify(application);
+        const headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+        return this.http.put(url, body, { headers: headers });
+    }
+
+    deleteApplicationEdition(applicationEditionId): Observable<any> {
+        const url = this.urlbuilder.buildDetailURL(this.config.applicationedition, applicationEditionId);
+        return this.http.delete(url);
+    }
+
+    getApplicationEditionList() {
+        const url = this.urlbuilder.buildURL(this.config.applicationedition);
+        const headers = new HttpHeaders({ 'Skip-Prefix': 'false' });
+        return this.http.get<any>(url, { headers: headers });
+    }
 
 }
